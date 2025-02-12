@@ -1,0 +1,39 @@
+Relate as principais dificuldades ao longo do desenvolvimento. 
+Tive uma certa dificuldade em fazer o compilador diferenciar uma chamada de procedimento de uma atribuição, porém isso ocorreu porque não havia lido os últimos slides da
+aula 10, então não foi algo difícil de corrigir quando encontrei a parte sobre fatoração.
+Problemas maiores foram descobrir como fatorar a gramática da chamada de função, que precisou de uma boa quantia de tentativa e erro, e como utilizar os argumentos 
+posicionais do Bison para fazer a verificação de erros. De longe este último foi o pior, pois tive que incluir uma variável global pois os argumentos posicionais não 
+estavam funcionando direito, em alguns casos $$ = 1 não parecia passar esse valor para a regra superior. Algo que também não entendi quanto a isso foi que na regra 
+variavel_funcao, que sobe para a regra fator eu tive que passar o valor através do argumento $1, não sei porque isso funcionou.
+
+Procure a descrição do comando record. Descreva (máximo 30 linhas) como incluí-lo no compilador.
+Ao ser declarado o record, será necessário acrescentá-lo a uma pilha de records, na qual cada elemento contém o identificador do record, e uma tabela de símbolos modificada 
+que contém, para cada campo, identificador, deslocamento em relação ao record, tipo, e uma outra tabela de símbolos idêntica que armazenará as informações de um record
+interno, caso exista. Ilustração:
+    pilha_records:  ident_record -> ident_campo, shift, tipo, tabela_interna -> ident_campo, shift, tipo, tabela interna -> ...
+Quando for declarada uma variável do tipo definido pelo record, a entrada do record na tabela de símbolos precisará dos campos identificador, categoria, nível léxico,
+tipo, deslocamento, passagem, número de campos, e uma tabela de símbolos própria do record, onde serão armazenados os campos do record. Nessa tabela de símbolos do record, 
+será necessário para cada campo: identificador, deslocamento em relação ao record (por exemplo, o primeiro campo do record terá deslocamento igual a 1, e será acessado
+somando o deslocamento do record com o deslocamento do campo), tipo, e uma outra tabela de símbolos igual a essa para um possível record interno. Um campo subsequente a um
+record interno tem o deslocamento igual ao último campo do record interno mais 1. A váriavel subsequente ao record possuirá deslocamento igual ao deslocamento do record 
+somado ao deslocamento do último campo do record (isso deve ser calculado de forma que some todos os records internos, caso seja necessário). Ilustração:
+    tabela_simbolos: ident_record, cat, n_lex, tipo, shift, pass, n_campos, tabela_interna -> ident_campo, shift, tipo, tabela_interna -> ...
+A gramática da declaração do record seria algo da seguinte forma, na parte de declaração de tipos (a primeira linha já está inclusa no compilador alterado):
+parte_declara_tipos: parte_declara_tipos definicao_tipo PONTO_E_VIRGULA | TYPE definicao_tipo PONTO_E_VIRGULA |
+parte_declara_tipos definição_record PONTO_E_VIRGULA | TYPE definição_record PONTO_E_VIRGULA | ;
+definicao_record: {/*salvar em uma variável global caso seja um record interno, para não incluir na tabela de records como se fosse um novo record*/} IDENT 
+{/*código para incluir o record na tabela de records*/} CMP_IGUAL {/*(note que CMP_IGUAL é o símbolo "=")*/} RECORD parte_declara_campos END PONTO_E_VIRGULA ;
+parte_declara_campos: parte_declara_campos declara_campo | declara_campo ;
+declara_campo: declara_campo IDENT {/*código para inserir o campo na tabela de símbolos do record*/} VIRGULA | IDENT {/*código para inserir o campo na tabela de símbolos 
+do record*/} DOIS_PONTOS IDENT {/*código para alterar o tipo dos campos na tabela de símbolos do record*/} PONTO_E_VIRGULA | definicao_record ;
+A gramática para acessar um campo do record seria algo da forma abaixo, modificando a regra variavel_funcao:
+variavel_funcao: {/*...*/} IDENT {/*salvar ident aqui, e o mover o código que estava aqui antes para após a verificação de se é um acesso a campo do record ou uma 
+variável de tipo padrão*/} acesso_record {/*código que anteriormente estava entre as chaves após o IDENT, agora dentro de uma verificação para utilizar o deslocamento
+calculado abaixo, caso seja necessário*/} funcao_opc {/*...*/} ;
+acesso_record: acesso_record PONTO IDENT {/*incrementar deslocamento ao chegar aqui para gerar CRVL, CREN, CRVI acima*/} | PONTO IDENT {/*incrementar deslocamento ao 
+chegar aqui para gerar CRVL, CREN, CRVI acima*/} | ;
+A gramática da atribuição também precisa ser modificada (omiti a fatoração inclusa no código original):
+atribuicao: atrib_record ATRIBUICAO expressao {/*utilizar o deslocamento calculado abaixo para gerar ARMZ e ARMI, caso seja um acesso a record*/} ;
+atrib_record: atrib_record PONTO IDENT {/*incrementar deslocamento ao chegar aqui, será utilizado acima*/} | PONTO IDENT {/*mesmo comentário anterior*/} | ;
+Resumindo, as partes onde se calcula o deslocamento precisam somar todos os deslocamentos internos com o deslocamento do record da tabela de símbolos.
+Será necessária uma variável global para armazenar o endereço de onde começa a tabela interna do record.

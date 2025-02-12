@@ -1,0 +1,7 @@
+Comparando com o código MEPA dos exemplos, no código que meu compilador gera alguns labels tem um número diferente. Por exemplo no Exemplo8.07, o rótulo R04 torna-se 
+R02, e o rótulo R08 torna-se R06.
+Outra diferença que ocorre é que o meu compilador não gera código de desvios para a linha seguinte. No mesmo exemplo de acima, há um DSVS R02 seguido de R02:NADA, e um
+DSVS R06 seguido de um R06:NADA. Essas linhas não ocorrem no código gerado por meu compilador
+Porém, nenhum dos problemas descritos acima gera erros durante a execução do código.
+
+Algo que eu notei que parece ser um erro dos exemplos, é que o código MEPA do ExemploErro2 parece estar incorreto e ser uma cópia do código MEPA do ExemploErro1

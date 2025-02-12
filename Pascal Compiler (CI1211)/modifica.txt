@@ -1,0 +1,32 @@
+Problemas:
+Os mesmos descritos em funcionamento.txt. O texto abaixo é uma cópia do outro documento.
+Comparando com o código MEPA dos exemplos, no código que meu compilador gera alguns labels tem um número diferente. Por exemplo no Exemplo8.07, o rótulo R04 torna-se 
+R02, e o rótulo R08 torna-se R06.
+Outra diferença que ocorre é que o meu compilador não gera código de desvios para a linha seguinte. No mesmo exemplo de acima, há um DSVS R02 seguido de R02:NADA, e um
+DSVS R06 seguido de um R06:NADA. Essas linhas não ocorrem no código gerado por meu compilador.
+Porém, nenhum dos problemas descritos acima gera erros durante a execução do código.
+
+Descreva a idéia original para abordar a alteração:
+Incluir as novas regras gramaticais, criar uma nova pilha de tipos, e alterar a verificação de erros: um tipo derivado com outro tipo derivado diferente acusa erro,
+um tipo derivado com um tipo padrão diferente do tipo original do tipo derivado acusa erro.
+	
+O que deu certo e o que teve de ser modificado no trajeto?
+Em relação à ideia em si não foram necessárias modificações. Porém logo após incluir a gramática (sem alterar o código em si do programa) o compilador já estava gerando
+código MEPA correto para o type1.pas, o que pareceu um pouco preocupante em relação à verificação de erros. 
+Acredito que isso seja porque a variável global (int tipo_fator) que uso para comparações de erros não é redefinida para zero após ser utilizada, e como nesses exemplos 
+a primeira atribuição é sempre um número essa variável fica definida como 1 (código para int) pelo resto da execução, pois antes das modificações não havia outra 
+possibilidade para essa variável ao chegar na regra variavel_funcao a não ser receber 1 se fosse int, ou 2 se fosse boolean (não implementado, então nunca ocorre).
+Então modifiquei essa parte para ter um else que armazena o ID do tipo em tipo_fator.
+
+Quais foram os trechos do código que foram alterados?
+Além da inclusão das novas regras gramaticais e da nova pilha de símbolos, os seguintes trechos foram alterados:
+    Declaração de função, seção de parâmetros formais, declaração de variáveis: correção para incluir um else para armazernar o tipo do token no tipo da variável/função.
+    Verificação de erros na atribuição: verificar se é uma comparação entre tipos padrão e tipos derivados, se for padrão verificar se são o mesmo tipo, caso não sejam, 
+        acusar erro.
+        Se um deles for derivado, converter para tipo padrão e verificar se é igual ao outro, caso não seja, acusar erro.
+        Se ambos forem derivados e diferentes entre si, acusar erro.
+    variavel_funcao: inclusão de else para subir o id do tipo derivado para os nodos superiores.
+
+Quais os maiores problemas para fazer funcionar?
+Não foi tão difícil quanto outras partes do compilador como chamada de funções ou descobrir como subir o tipo para verificação de erros utilizando os argumentos posicionais
+do Bison, provavelmente a maior dificuldade foi pensar um jeito eficiente de fazer as comparações necessárias 
