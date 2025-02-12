@@ -3,7 +3,7 @@ Implementation of a Branch and Bound algorithm to select an appropriately repres
 General idea:
 
   𝐵𝑟𝑎𝑛𝑐ℎ_𝑎𝑛𝑑_𝑏𝑜𝑢𝑛𝑑(𝑘, 𝑖, 𝑋)
-    if 𝑘 == 𝑝 and X is representative
+  if 𝑘 == 𝑝 and X is representative
     
       if 𝑐𝑜st(𝑋) < 𝑜𝑝𝑡
       
