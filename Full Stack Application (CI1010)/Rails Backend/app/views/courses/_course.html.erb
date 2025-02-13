@@ -1,0 +1,26 @@
+<div id="<%= dom_id course %>">
+  <p>
+    <strong>Name:</strong>
+    <%= course.name %>
+  </p>
+
+  <p>
+    <strong>Codename:</strong>
+    <%= course.codename %>
+  </p>
+
+  <p>
+    <strong>Majors:</strong>
+    <% course.majors.each do |y| %>
+	<p><%= y.name %></p>
+    <% end %>
+  </p>
+
+  <p>
+    <strong>Students:</strong>
+    <% course.students.each do |y| %>
+	    <p><%= y.name %></p>
+    <% end %>
+  </p>
+
+</div>
