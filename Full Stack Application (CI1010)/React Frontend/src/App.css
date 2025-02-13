@@ -1,0 +1,113 @@
+.App {
+	text-align: center;
+	font-family: "Nunito";
+}
+
+.App-logo {
+	height: 40vmin;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.App-logo {
+		animation: App-logo-spin infinite 20s linear;
+	}
+}
+
+.App-header {
+	background-color: white;
+	min-height: 20vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: rgb(20, 20, 20);
+}
+
+.App-link {
+	color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.border-radius-30px {
+	border-radius: 25px !important;
+}
+
+.login-title {
+	vertical-align: "middle";
+}
+
+.portal-in {
+	font-size: 35px;
+	vertical-align: -7%;
+	opacity: 10%;
+	margin-right: 3px;
+}
+
+.portal-out {
+	font-size: 35px;
+	vertical-align: -7%;
+	opacity: 10%;
+	margin-left: 3px;
+}
+
+.login-button {
+	min-height: 15vh;
+	margin-right: 20vh;
+}
+
+.login-text {
+	margin-bottom: -13vh;
+}
+
+.logout-button-admin {
+	margin-top: -11vh;
+	margin-bottom: 1vh;
+	margin-right: 20vh;
+}
+
+.logout-button {
+	margin-top: -7vh;
+	margin-right: 20vh;
+}
+
+.menu {
+	position: sticky;
+	display: inline-block;
+	vertical-align: top;
+	max-height: 100vh;
+	overflow-y: auto;
+	width: 250px;
+	top: 0;
+	bottom: 0;
+	padding: 30px;
+}
+
+.content {
+	display: inline-block;
+}
+
+.is-left-aligned {
+	text-align: left;
+}
+
+.is-center-aligned {
+	text-align: center;
+}
+
+.checkbox {
+	line-height: 1.5;
+}
+
+.clickable {
+	cursor: pointer;
+}
