@@ -1,0 +1,24 @@
+USAGE: ./run.sh <nq> <np> <D> <k>
+Executando 10 vezes com 1 thread  (local),   [128] pontos em Q, [400000] pontos em P, [300] dimensões, e k = [128]:
+11.412146
+11.156405
+11.139911
+11.397118
+11.255135
+11.137729
+11.134683
+11.143296
+11.133522
+11.179406
+Executando 10 vezes com 4 threads (local),   [128] pontos em Q, [400000] pontos em P, [300] dimensões, e k = [128]:
+2.952578
+2.937936
+2.960218
+2.956580
+2.951359
+2.948277
+2.940763
+2.960809
+2.937781
+2.994803
+Executando 10 vezes com 4 threads (cluster), [128] pontos em Q, [400000] pontos em P, [300] dimensões, e k = [128]:

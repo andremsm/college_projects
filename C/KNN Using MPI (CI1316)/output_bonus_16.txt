@@ -1,0 +1,12 @@
+USAGE: ./run.sh <nq> <np> <D> <k>
+(bônus) Executando 10 vezes com 16 threads (cluster), [128] pontos em Q, [400000] pontos em P, [300] dimensões, e k = [128]:
+0.733421
+0.747346
+0.733551
+0.734564
+0.733456
+0.738093
+0.736089
+0.738437
+0.733575
+0.738744
